@@ -45,14 +45,18 @@ class User:
         self.borrowed_books = []
 
     def borrow_book(self, book):
-        self.borrowed_books.append(book)
-        book.borrow()
-        return f"{self.name} borrowed {book.get_title()}"
+        if book not in self.borrowed_books:
+            self.borrowed_books.append(book)
+            book.borrow()
+            return f"{self.name} borrowed {book.get_title()}"
+        return f"{book.get_title()} is already borrowed. Please try having some other book!"
 
     def return_book(self, book):
-        self.borrowed_books.remove(book)
-        book.return_book()
-        return f"{self.name} returned {book.get_title()}"
+        if book in self.borrowed_books:
+            self.borrowed_books.remove(book)
+            book.return_book()
+            return f"{self.name} returned {book.get_title()}"
+        return f"{self.name} didn't borrowed {book.get_title()}"
 
 class Librarian(User):
     def add_book(self, book_list, book):
@@ -75,6 +79,7 @@ def main():
     print(book1.display_info())
     print(book2.display_info())
 
+    print(member.borrow_book(book1))
     print(member.borrow_book(book1))
     print(member.borrow_book(book2))
 
